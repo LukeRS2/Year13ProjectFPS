@@ -6,6 +6,13 @@ public static class scr_Models
 {
     #region - Player - 
 
+    public enum PlayerStance
+    {
+        Stand,
+        Crouch,
+        Prone
+    }
+     
     [Serializable]
 
     public class PlayerSettingsModel 
@@ -22,7 +29,17 @@ public static class scr_Models
         public float WalkingForwardSpeed;
         public float WalkingBackwardsSpeed;
         public float WalkingStrafeSpeed;
-        
+
+        [Header("Jumping")]
+        public float JumpingHeight;
+        public float JumpingFalloff;
+    }
+
+    [Serializable]
+    public class CharacterStance
+    {
+        public float CameraHeight;
+        public CapsuleCollider StanceCollider;
     }
 
     #endregion
