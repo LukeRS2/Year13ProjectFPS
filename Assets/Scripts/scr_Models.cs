@@ -25,7 +25,11 @@ public static class scr_Models
         public bool ViewXInverted;
         public bool ViewYInverted;
 
-        [Header("Movement")]
+        [Header("Movement - Running")]
+        public float RunningForwardSpeed;
+        public float RunningStrafeSpeed;
+
+        [Header("Movement - Walking")]
         public float WalkingForwardSpeed;
         public float WalkingBackwardsSpeed;
         public float WalkingStrafeSpeed;

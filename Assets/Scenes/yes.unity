@@ -831,21 +831,23 @@ MonoBehaviour:
   cameraHolder: {fileID: 69583202}
   feetTransform: {fileID: 1080260914}
   playerSettings:
-    ViewXSensitivity: 7
-    ViewYSensitivity: 7
+    ViewXSensitivity: 20
+    ViewYSensitivity: 20
     ViewXInverted: 0
     ViewYInverted: 0
+    RunningForwardSpeed: 10
+    RunningStrafeSpeed: 6
     WalkingForwardSpeed: 4
     WalkingBackwardsSpeed: 2
     WalkingStrafeSpeed: 3
-    JumpingHeight: 5
-    JumpingFalloff: 0.5
+    JumpingHeight: 6
+    JumpingFalloff: 0.1
   viewClampYMin: -70
   viewClampYMax: 80
   playerMask:
     serializedVersion: 2
     m_Bits: 55
-  gravityAmount: 0.2
+  gravityAmount: 0.02
   gravityMin: -3
   jumpingForce: {x: 0, y: 0, z: 0}
   playerStance: 0

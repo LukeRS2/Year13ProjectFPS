@@ -17,6 +17,7 @@ public class scr_CharacterController : MonoBehaviour
     public Transform cameraHolder;
     public Transform feetTransform;
 
+
     [Header("Settings")]
     public PlayerSettingsModel playerSettings;
     public float viewClampYMin = -70;
@@ -39,13 +40,13 @@ public class scr_CharacterController : MonoBehaviour
     public CharacterStance playerCrouchStance;
     public CharacterStance playerProneStance;
     private float stanceCheckErrorMargin = 0.05f;
-
-
     private float cameraHeight;
     private float cameraHeightVelocity;
 
     private Vector3 stanceCapsuleCenterVelocity;
     private float stanceCapsuleHeightVelocity;
+
+    private bool isSprinting;
 
     private void Awake()
     {
@@ -54,9 +55,9 @@ public class scr_CharacterController : MonoBehaviour
         defaultInput.Character.Movement.performed += e => input_Movement = e.ReadValue<Vector2>();
         defaultInput.Character.View.performed += e => input_View = e.ReadValue<Vector2>();
         defaultInput.Character.Jump.performed += e => Jump();
-
         defaultInput.Character.Crouch.performed += e => Crouch();
         defaultInput.Character.Prone.performed += e => Prone();
+        defaultInput.Character.Sprint.performed += e => ToggleSprint();    
 
         defaultInput.Enable();
 
@@ -90,10 +91,21 @@ public class scr_CharacterController : MonoBehaviour
 
     private void CalculateMovement() 
     {
-        var verticalSpeed = playerSettings.WalkingForwardSpeed * input_Movement.y * Time.deltaTime;
-        var horizontalSpeed = playerSettings.WalkingStrafeSpeed * input_Movement.x * Time.deltaTime;
+        if (input_Movement.y <= 0.2f)
+        {
+            isSprinting = false;
+        }
 
-        var newMovementSpeed = new Vector3(horizontalSpeed, 0, verticalSpeed);
+        var verticalSpeed = playerSettings.WalkingForwardSpeed;
+        var horizontalSpeed = playerSettings.WalkingStrafeSpeed;
+
+        if (isSprinting)
+        {
+            verticalSpeed = playerSettings.RunningForwardSpeed;
+            horizontalSpeed = playerSettings.RunningStrafeSpeed;
+        }
+
+        var newMovementSpeed = new Vector3(horizontalSpeed * input_Movement.x * Time.deltaTime, 0, verticalSpeed * input_Movement.y * Time.deltaTime);
 
         newMovementSpeed = transform.TransformDirection(newMovementSpeed);
 
@@ -150,8 +162,14 @@ public class scr_CharacterController : MonoBehaviour
 
     private void Jump()
     {
-        if (!characterController.isGrounded)
+        if (!characterController.isGrounded || playerStance == PlayerStance.Prone)
         {
+            return;
+        }
+
+        if (playerStance == PlayerStance.Crouch)
+        {
+            playerStance = PlayerStance.Stand; 
             return;
         }
 
@@ -198,5 +216,16 @@ public class scr_CharacterController : MonoBehaviour
 
 
         return Physics.CheckCapsule(start, end, characterController.radius, playerMask);
+    }
+
+    private void ToggleSprint()
+    {
+          if (input_Movement.y <= 0.2f)
+        {
+            isSprinting = false;
+            return;
+        }
+
+        isSprinting = !isSprinting;
     }
 }
