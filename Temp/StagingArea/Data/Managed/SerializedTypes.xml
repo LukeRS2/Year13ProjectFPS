@@ -1,0 +1,7 @@
+<linker>
+	<assembly fullname="Assembly-CSharp">
+		<type fullname="scr_Models/CharacterStance" preserve="nothing" serialized="true"/>
+		<type fullname="scr_Models/PlayerSettingsModel" preserve="nothing" serialized="true"/>
+		<type fullname="scr_Models/WeaponSettingsModel" preserve="nothing" serialized="true"/>
+	</assembly>
+</linker>
